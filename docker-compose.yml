@@ -1,0 +1,64 @@
+
+services:
+  laravel:
+    container_name: laravel
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    volumes:
+      - .:/var/www
+    environment:
+      - APP_URL=https://estatetraderu.ru
+      - DB_CONNECTION=mysql
+      - DB_HOST=mysql
+      - DB_DATABASE=laravel
+      - DB_USERNAME=root
+      - DB_PASSWORD=root
+    networks:
+      - appNetwork
+
+  web:
+    image: nginx:stable-alpine
+    container_name: web
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - .:/var/www
+      - ./certs:/etc/nginx/certs:ro
+    depends_on:
+      - laravel
+    networks:
+      - appNetwork
+
+  mysql:
+    container_name: mysql
+    image: mysql:8.2
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: laravel
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - appNetwork
+
+  phpmyadmin:
+    container_name: phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - 8086:80
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    networks:
+      - appNetwork
+
+volumes:
+  db_data: {}
+
+networks:
+  appNetwork:
+    driver: bridge
