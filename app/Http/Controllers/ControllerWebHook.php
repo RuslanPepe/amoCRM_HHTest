@@ -14,16 +14,18 @@ class ControllerWebHook extends ControllerAmoMethods{
     date_default_timezone_set('Europe/Moscow');
     response()->json(['status' => 'OK'], 200)->send();
 
-    $typeHandle = array_keys($request)[1];
-    $typeHandleAction = array_keys($request[$typeHandle])[0];
 
-    switch ($typeHandleAction){
-      case 'add':
-        $this->handleAddWebHookAdd($request->all());
-        break;
-      case 'update':
-        $this->handleAddWebHookUpdate($request->all());
-    }
+    $typeHandle = array_keys($request->all())[1];
+    logger($typeHandle);
+    $typeHandleAction = array_keys($request->all()[$typeHandle])[0];
+    logger($typeHandleAction);
+//    switch ($typeHandleAction){
+//      case 'add':
+//        $this->handleWebHookAdd($request->all());
+//        break;
+//      case 'update':
+//        $this->handleWebHookUpdate($request->all());
+//    }
 
 
 
