@@ -8,9 +8,6 @@
     <title>amoCRM</title>
 </head>
 <body>
-<form action="https://estatetraderu.ru/webhook" method="post">
-  <button type="submit"></button>
-</form>
 <script
   class="amocrm_oauth"
   charset="utf-8"
